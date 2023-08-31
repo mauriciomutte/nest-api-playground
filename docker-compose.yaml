@@ -21,6 +21,6 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=nest
     volumes:
-      - test-postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
 volumes:
   postgres-data:
