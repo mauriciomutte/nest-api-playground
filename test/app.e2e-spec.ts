@@ -4,10 +4,12 @@ import * as request from 'supertest';
 
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
+import { CreateUserDto } from '../src/auth/dto';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
+  let token: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -26,10 +28,28 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  describe('Auth', () => {
+    const userDto: CreateUserDto = {
+      email: 'calopsita@gmail.com',
+      password: '123',
+    };
+
+    it('/auth/signup (POST)', () => {
+      return request(app.getHttpServer())
+        .post('/auth/signup')
+        .send(userDto)
+        .expect(201);
+    });
+
+    it('/auth/signin (POST)', async () => {
+      return request(app.getHttpServer())
+        .post('/auth/signin')
+        .send(userDto)
+        .expect(200)
+        .then((response) => {
+          token = response.body.access_token;
+          return response;
+        });
+    });
   });
 });
