@@ -60,5 +60,13 @@ describe('AppController (e2e)', () => {
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
     });
+
+    it('/user (PATCH)', () => {
+      return request(app.getHttpServer())
+        .patch('/users')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ name: 'Calopsita' })
+        .expect(200);
+    });
   });
 });
