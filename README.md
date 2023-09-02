@@ -4,6 +4,17 @@
 
 <h1 align="center">NestJS API Playground</h1>
 
+## Entities
+
+```mermaid
+---
+title: Entities
+---
+erDiagram
+    USER ||--o{ BOOKMARK : creates
+
+```
+
 ## Installation
 
 ```bash
