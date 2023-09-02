@@ -56,7 +56,7 @@ describe('AppController (e2e)', () => {
   describe('User', () => {
     it('/user/me (GET)', () => {
       return request(app.getHttpServer())
-        .get('/user/me')
+        .get('/users/me')
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
     });
