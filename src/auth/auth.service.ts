@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import * as argon from 'argon2';
+import * as bcrypt from 'bcrypt';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async signUp(createUserDto: CreateUserDto) {
-    const hash = await argon.hash(createUserDto.password);
+    const hash = await bcrypt.hash(createUserDto.password, 10);
 
     try {
       const user = await this.prisma.user.create({
@@ -47,7 +47,7 @@ export class AuthService {
       throw new ForbiddenException('Wrong email or password');
     }
 
-    const isPasswordValid = await argon.verify(user.hash, loginDto.password);
+    const isPasswordValid = await bcrypt.compare(user.hash, loginDto.password);
     if (!isPasswordValid) {
       throw new ForbiddenException('Wrong email or password');
     }
